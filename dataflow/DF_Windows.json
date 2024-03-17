@@ -1,0 +1,79 @@
+{
+	"name": "DF_Windows",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Windows_Input",
+						"type": "DatasetReference"
+					},
+					"name": "Input"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "Window_Output",
+						"type": "DatasetReference"
+					},
+					"name": "Output"
+				}
+			],
+			"transformations": [
+				{
+					"name": "DeptSum"
+				},
+				{
+					"name": "join1"
+				},
+				{
+					"name": "CountrySum"
+				},
+				{
+					"name": "join2"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          employee_id as integer,",
+				"          first_name as string,",
+				"          department_name as string,",
+				"          country_id as string,",
+				"          salary as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> Input",
+				"Input aggregate(groupBy(department_name),",
+				"     Sum_Sal = sum(salary)) ~> DeptSum",
+				"Input, DeptSum join(Input@department_name == DeptSum@department_name,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join1",
+				"Input aggregate(groupBy(country_id),",
+				"     County_SUm = sum(salary)) ~> CountrySum",
+				"join1, CountrySum join(Input@country_id == CountrySum@country_id,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join2",
+				"join2 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          emp_id as string,",
+				"          Name as string,",
+				"          Salary as string,",
+				"          department_name as string,",
+				"          country_id as string",
+				"     ),",
+				"     partitionFileNames:['Output_Window.csv'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> Output"
+			]
+		}
+	}
+}

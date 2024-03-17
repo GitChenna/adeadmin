@@ -1,0 +1,30 @@
+{
+	"name": "StoredProcedure",
+	"properties": {
+		"activities": [
+			{
+				"name": "Delete_File",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[Delete_File]"
+				},
+				"linkedServiceName": {
+					"referenceName": "LS_SQL",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2024-03-14T17:54:13Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

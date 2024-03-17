@@ -1,0 +1,104 @@
+{
+	"name": "Copy_Dynamic_SerDbTbl",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_Dynamic_SQL_SERDBTBL",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": {
+								"value": "@pipeline().parameters.InputTBL",
+								"type": "Expression"
+							},
+							"DbName": {
+								"value": "@pipeline().parameters.InputTBL",
+								"type": "Expression"
+							},
+							"ServerName": {
+								"value": "@pipeline().parameters.InputServerName",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_Dynamic_SQL_SERDBTBL",
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": {
+								"value": "@pipeline().parameters.OutputTBL",
+								"type": "Expression"
+							},
+							"DbName": {
+								"value": "@pipeline().parameters.OutputDBName",
+								"type": "Expression"
+							},
+							"ServerName": {
+								"value": "@pipeline().parameters.OutputServerName",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			}
+		],
+		"parameters": {
+			"InputServerName": {
+				"type": "string"
+			},
+			"InputDBName": {
+				"type": "string"
+			},
+			"InputTBL": {
+				"type": "string"
+			},
+			"OutputServerName": {
+				"type": "string"
+			},
+			"OutputDBName": {
+				"type": "string"
+			},
+			"OutputTBL": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2024-03-14T05:29:31Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,17 @@
+{
+	"name": "Emp_Nul",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_SQL",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "emp_null"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

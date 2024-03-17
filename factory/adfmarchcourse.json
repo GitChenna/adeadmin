@@ -1,0 +1,9 @@
+{
+	"name": "adfmarchcourse",
+	"location": "centralindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "197aa2a4-2539-4709-94bf-469150efbd4e",
+		"tenantId": "aa0125a4-0366-4762-aa55-4d8669ab649e"
+	}
+}

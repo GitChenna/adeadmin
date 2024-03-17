@@ -1,0 +1,40 @@
+{
+	"name": "DS_Dynamic_SQL_SERDBTBL",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_SQL_SerDbTbl",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"Dynamic_Server": {
+					"value": "@dataset().ServerName",
+					"type": "Expression"
+				},
+				"Dynamic_DB": {
+					"value": "@dataset().DbName",
+					"type": "Expression"
+				}
+			}
+		},
+		"parameters": {
+			"TableName": {
+				"type": "String"
+			},
+			"DbName": {
+				"type": "String"
+			},
+			"ServerName": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"table": {
+				"value": "@dataset().TableName",
+				"type": "Expression"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

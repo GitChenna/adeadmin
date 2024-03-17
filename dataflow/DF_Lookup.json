@@ -1,0 +1,73 @@
+{
+	"name": "DF_Lookup",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Lookup_Left",
+						"type": "DatasetReference"
+					},
+					"name": "Lookuplift"
+				},
+				{
+					"dataset": {
+						"referenceName": "Lookup_Right",
+						"type": "DatasetReference"
+					},
+					"name": "lookupright"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "DS_Lookup",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "lookup1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          Empid as integer,",
+				"          Name as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> Lookuplift",
+				"source(output(",
+				"          Empid as integer,",
+				"          Dept as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> lookupright",
+				"Lookuplift, lookupright lookup(Lookuplift@Empid == lookupright@Empid,",
+				"     multiple: false,",
+				"     pickup: 'last',",
+				"     asc(lookupright@Empid, false),",
+				"     asc(Dept, true),",
+				"     broadcast: 'auto')~> lookup1",
+				"lookup1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          emp_id as string,",
+				"          Name as string,",
+				"          Salary as string,",
+				"          department_name as string,",
+				"          country_id as string",
+				"     ),",
+				"     partitionFileNames:['Lookup_Ouput.csv'],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sink1"
+			]
+		}
+	}
+}
